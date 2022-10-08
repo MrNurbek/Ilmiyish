@@ -20,9 +20,10 @@ from django.conf.urls.static import static
 from home import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/', include("route.urls")),
-]
+                  path('admin/', admin.site.urls),
+                  path('api/v1/', include("route.urls")),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL,
+                                                                                           document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(
     path('i18n/', include('django.conf.urls.i18n')),
