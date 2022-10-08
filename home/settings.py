@@ -135,7 +135,7 @@ LOCATION_FIELD = {
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/nurbek/Ilmiyish/media/'
+MEDIA_ROOT = '/nurbek/Ilmiyish/profession/'
 MEDIA_URL = '/media/'
 
 # STATICFILES_DIRS = [
