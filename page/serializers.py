@@ -154,7 +154,7 @@ class ImagesReviewsSerializer(serializers.ModelSerializer):
 class ReviewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
-        fields = ['id', 'text', 'date', 'star', 'products']
+        fields = ['id', 'text', 'date', 'star', 'propducts']
 
     # def get_images(self, obj):
     #     images = ImagesReviews.objects.filter(reviews=obj).all()

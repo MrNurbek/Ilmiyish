@@ -80,12 +80,12 @@ def add_reviews(request):
     try:
         star = request.data["star"]
         text = request.data['text']
-        products = request.data['products']
+        propducts = request.data['propducts']
         reviews = Reviews.objects.create(
 
             star=star,
             text=text,
-            products_id=products,
+            propducts_id=propducts,
         )
         reviews.save()
         # files = request.FILES.getlist('image')
