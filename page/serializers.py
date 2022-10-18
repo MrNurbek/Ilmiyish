@@ -51,7 +51,7 @@ class TypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Type
-        fields = ["id", "image", "name","marker"]
+        fields = ["id", "image", "name", "marker"]
 
     def get_name(self, obj):
         request = self.context.get("request")
@@ -65,6 +65,12 @@ class TypeSerializer(serializers.ModelSerializer):
         return obj.name
 
 
+class TypeSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = Type
+        fields = ["id", "marker"]
+
+
 class ImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
@@ -74,10 +80,14 @@ class ImagesSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     review_avg = serializers.SerializerMethodField()
+    type = serializers.SerializerMethodField()
+    marker = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'star', 'images', 'city', 'type', 'review_avg', 'text', 'lon', 'lat', 'open', 'closed']
+        fields = ['id', 'name', 'star', 'images', 'city', 'type', 'review_avg', 'text', 'lon', 'lat', 'open', 'closed',
+                  'marker'
+                  ]
 
     def get_images(self, obj):
         images = Images.objects.filter(product=obj).first()
@@ -87,6 +97,16 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_review_avg(self, obj):
         return Reviews.objects.filter(propducts=obj).aggregate(avg_rating=Avg('star'))["avg_rating"]
+
+    def get_type(self, obj):
+        if obj.type:
+            return obj.type.id
+        return None
+
+    def get_marker(self, obj):
+        if obj.type:
+            return obj.type.marker.url
+        return None
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
