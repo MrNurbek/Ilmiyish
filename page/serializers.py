@@ -96,7 +96,7 @@ class ProductSerializer(serializers.ModelSerializer):
         return None
 
     def get_review_avg(self, obj):
-        return Reviews.objects.filter(propducts=obj).aggregate(avg_rating=Avg('star'))["avg_rating"]
+        return Reviews.objects.filter(products=obj).aggregate(avg_rating=Avg('star'))["avg_rating"]
 
     def get_type(self, obj):
         if obj.type:
@@ -136,13 +136,13 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         return ImagesSerializer(images, many=True, context={'request': self.context['request']}).data
 
     def get_review(self, obj):
-        review = Reviews.objects.filter(propducts=obj).first()
+        review = Reviews.objects.filter(products=obj).first()
         if review:
             return ReviewsSerializer(review, many=False, context={'request': self.context['request']}).data
         return None
 
     def get_review_avg(self, obj):
-        return Reviews.objects.filter(propducts=obj).aggregate(avg_rating=Avg('star'))['avg_rating']
+        return Reviews.objects.filter(products=obj).aggregate(avg_rating=Avg('star'))['avg_rating']
 
 
 class ImagesReviewsSerializer(serializers.ModelSerializer):
