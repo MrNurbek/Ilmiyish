@@ -59,7 +59,7 @@ class Product(models.Model):
 class Reviews(models.Model):
     star = models.IntegerField(default=0, null=True, blank=True)
     text = models.CharField(max_length=512, null=True, blank=True)
-    propducts = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE, null=True)
+    products = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
