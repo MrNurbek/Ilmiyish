@@ -24,7 +24,7 @@ class Type(models.Model):
     name_ru = models.CharField(max_length=255, null=True, blank=True)
     name_en = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to="profession", default='users/default.png')
-    marker = models.ImageField(upload_to="profession", default='users/default.png')
+    marker = models.ImageField(upload_to="profession",  null=True, blank=True)
     parent = models.ForeignKey('self', related_name='childs', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
