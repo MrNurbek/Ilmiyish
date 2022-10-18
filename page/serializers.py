@@ -51,7 +51,7 @@ class TypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Type
-        fields = ["id", "image", "name"]
+        fields = ["id", "image", "name","marker"]
 
     def get_name(self, obj):
         request = self.context.get("request")
