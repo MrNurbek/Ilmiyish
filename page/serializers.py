@@ -3,7 +3,7 @@ from django.db.models import Avg
 
 from rest_framework import serializers
 from django.db.models import Avg, Count
-from page.models import City, Type, Images, Product, Reviews
+from page.models import *
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -145,7 +145,19 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         return Reviews.objects.filter(propducts=obj).aggregate(avg_rating=Avg('star'))['avg_rating']
 
 
+class ImagesReviewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesReviews
+        fields = "__all__"
+
+
 class ReviewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
-        fields = ['text', 'date', 'propducts', 'star']
+        fields = ['id', 'text', 'date', 'star', 'products']
+
+    # def get_images(self, obj):
+    #     images = ImagesReviews.objects.filter(reviews=obj).all()
+    #     if images:
+    #         return ImagesReviewsSerializer(images, many=True, context={'request': self.context['request']}).data
+    #     return None

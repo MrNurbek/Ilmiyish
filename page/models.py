@@ -24,7 +24,7 @@ class Type(models.Model):
     name_ru = models.CharField(max_length=255, null=True, blank=True)
     name_en = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to="profession", default='users/default.png')
-    marker = models.ImageField(upload_to="profession",  null=True, blank=True)
+    marker = models.ImageField(upload_to="profession", null=True, blank=True)
     parent = models.ForeignKey('self', related_name='childs', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -34,6 +34,11 @@ class Type(models.Model):
 class Images(models.Model):
     image = models.ImageField(upload_to="profession", default='users/default.png', null=True, blank=True)
     product = models.ForeignKey('Product', related_name='images', on_delete=models.CASCADE, null=True)
+
+
+class ImagesReviews(models.Model):
+    image = models.ImageField(upload_to="profession", default='users/default.png', null=True, blank=True)
+    reviews = models.ForeignKey("Reviews", related_name='images', on_delete=models.CASCADE, null=True)
 
 
 class Product(models.Model):
@@ -54,7 +59,7 @@ class Product(models.Model):
 class Reviews(models.Model):
     star = models.IntegerField(default=0, null=True, blank=True)
     text = models.CharField(max_length=512, null=True, blank=True)
-    propducts = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE, null=True)
+    products = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
