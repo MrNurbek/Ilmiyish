@@ -75,19 +75,21 @@ class ReviewsViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateM
 
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated, ])
+@permission_classes([AllowAny, ])
 def add_reviews(request):
-    try:
+
+    # try:
         star = request.data["star"]
         text = request.data['text']
-        propducts = request.data['propducts']
+        products = request.data['products']
         reviews = Reviews.objects.create(
 
             star=star,
             text=text,
-            propducts_id=propducts,
+            propducts_id=products,
         )
         reviews.save()
+
         # files = request.FILES.getlist('image')
         # for file in files:
         #     imagesreviews = ImagesReviews.objects.create(
@@ -102,9 +104,9 @@ def add_reviews(request):
         }
         return Response(result, status=status.HTTP_200_OK)
 
-    except KeyError:
-        res = {
-            'status': 0,
-            'msg': 'erorr add_reviews'
-        }
-        return Response(res)
+    # except KeyError:
+    #     res = {
+    #         'status': 0,
+    #         'msg': 'error add_reviews'
+    #     }
+    #     return Response(res)
