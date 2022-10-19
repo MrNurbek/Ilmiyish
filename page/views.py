@@ -72,6 +72,7 @@ class ReviewsViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateM
     serializer_class = ReviewsSerializer
     pagination_class = LargeResultsSetPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['propducts']
 
 
 @api_view(['POST'])
