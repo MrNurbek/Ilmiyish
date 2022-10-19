@@ -96,7 +96,7 @@ class ProductSerializer(serializers.ModelSerializer):
         return None
 
     def get_review_avg(self, obj):
-        return Reviews.objects.filter(products=obj).aggregate(avg_rating=Avg('star'))["avg_rating"]
+        return Reviews.objects.filter(propducts=obj).aggregate(avg_rating=Avg('star'))["avg_rating"]
 
     def get_type(self, obj):
         if obj.type:
