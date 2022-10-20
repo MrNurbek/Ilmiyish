@@ -66,6 +66,7 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, view
     filterset_class = ProductFilter
 
 
+
 class ReviewsViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
     queryset = Reviews.objects.all()
