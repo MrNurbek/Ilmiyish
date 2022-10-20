@@ -77,6 +77,19 @@ class ImagesSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ImagesSerializer2(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Images
+        fields = "__all__"
+
+    def get_product(self, obj):
+        if obj:
+            return obj.product.id
+        return None
+
+
 class ProductSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     review_avg = serializers.SerializerMethodField()

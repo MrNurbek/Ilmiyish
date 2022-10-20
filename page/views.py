@@ -59,12 +59,11 @@ class TypeViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateMode
 
 
 class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductImageSerializer
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer2
     pagination_class = LargeResultsSetPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_class = ProductFilter
-
+    filterset_class = ImageFilter
 
 
 class ReviewsViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
@@ -79,36 +78,35 @@ class ReviewsViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateM
 @api_view(['POST'])
 @permission_classes([AllowAny, ])
 def add_reviews(request):
-
     # try:
-        star = request.data["star"]
-        text = request.data['text']
-        products = request.data['products']
-        reviews = Reviews.objects.create(
+    star = request.data["star"]
+    text = request.data['text']
+    products = request.data['products']
+    reviews = Reviews.objects.create(
 
-            star=star,
-            text=text,
-            propducts_id=products,
-        )
-        reviews.save()
+        star=star,
+        text=text,
+        propducts_id=products,
+    )
+    reviews.save()
 
-        # files = request.FILES.getlist('image')
-        # for file in files:
-        #     imagesreviews = ImagesReviews.objects.create(
-        #         image=file,
-        #         reviews=reviews
-        #     ).save()
-        result = {
-            'status': 1,
-            'msg': 'add_reviews',
-            'reviews': ReviewsSerializer(reviews, many=False, context={"request": request}).data,
-            # 'imagesreviews': ImagesReviewsSerializer(imagesreviews, many=False, context={"request": request}).data
-        }
-        return Response(result, status=status.HTTP_200_OK)
+    # files = request.FILES.getlist('image')
+    # for file in files:
+    #     imagesreviews = ImagesReviews.objects.create(
+    #         image=file,
+    #         reviews=reviews
+    #     ).save()
+    result = {
+        'status': 1,
+        'msg': 'add_reviews',
+        'reviews': ReviewsSerializer(reviews, many=False, context={"request": request}).data,
+        # 'imagesreviews': ImagesReviewsSerializer(imagesreviews, many=False, context={"request": request}).data
+    }
+    return Response(result, status=status.HTTP_200_OK)
 
-    # except KeyError:
-    #     res = {
-    #         'status': 0,
-    #         'msg': 'error add_reviews'
-    #     }
-    #     return Response(res)
+# except KeyError:
+#     res = {
+#         'status': 0,
+#         'msg': 'error add_reviews'
+#     }
+#     return Response(res)
