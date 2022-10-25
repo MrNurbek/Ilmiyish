@@ -95,10 +95,11 @@ class ProductSerializer(serializers.ModelSerializer):
     review_avg = serializers.SerializerMethodField()
     type = serializers.SerializerMethodField()
     marker = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'star', 'images', 'city', 'type', 'review_avg', 'text', 'lon', 'lat', 'open', 'closed',
+        fields = ['id', 'name', 'star', 'images', 'city','city_id', 'type', 'review_avg', 'text', 'lon', 'lat', 'open', 'closed',
                   'marker'
                   ]
 
@@ -115,6 +116,17 @@ class ProductSerializer(serializers.ModelSerializer):
         if obj.type:
             return obj.type.id
         return None
+
+    def get_city(self, obj):
+        request = self.context.get("request")
+        data = request.GET if hasattr(request, 'GET') else {}
+        lang = data['lang'] if 'lang' in data else 'uz'
+
+        if lang == "ru":
+            return obj.city.name_ru
+        elif lang == "en":
+            return obj.city.name_en
+        return obj.name
 
     def get_marker(self, obj):
         if obj.type:
