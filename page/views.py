@@ -64,6 +64,7 @@ class ProductImageViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, view
     pagination_class = LargeResultsSetPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = ImageFilter
+    filterset_fields = ['product']
 
 
 class ReviewsViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
