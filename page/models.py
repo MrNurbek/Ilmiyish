@@ -61,7 +61,9 @@ class Reviews(models.Model):
     text = models.CharField(max_length=512, null=True, blank=True)
     propducts = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.text
-#dfs
+# dfs

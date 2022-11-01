@@ -82,9 +82,12 @@ def add_reviews(request):
     # try:
     star = request.data["star"]
     text = request.data['text']
+    first_name = request.data['first_name']
+    last_name = request.data['last_name']
     products = request.data['products']
     reviews = Reviews.objects.create(
-
+        first_name=first_name,
+        last_name=last_name,
         star=star,
         text=text,
         propducts_id=products,

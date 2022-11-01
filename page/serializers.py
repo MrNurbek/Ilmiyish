@@ -99,7 +99,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'star', 'images', 'city','city_id', 'type', 'review_avg', 'text', 'lon', 'lat', 'open', 'closed',
+        fields = ['id', 'name', 'star', 'images', 'city', 'city_id', 'type', 'review_avg', 'text', 'lon', 'lat', 'open',
+                  'closed',
                   'marker'
                   ]
 
@@ -179,7 +180,7 @@ class ImagesReviewsSerializer(serializers.ModelSerializer):
 class ReviewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
-        fields = ['id', 'text', 'date', 'star', 'propducts']
+        fields = ['id', 'text', 'date', 'star', 'propducts', 'first_name', 'last_name']
 
     # def get_images(self, obj):
     #     images = ImagesReviews.objects.filter(reviews=obj).all()
