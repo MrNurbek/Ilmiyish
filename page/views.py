@@ -57,7 +57,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
         d = ""
 
         for i in asa:
-            serializer = ProductSerializer(Product.objects.get(id=i)).data
+            serializer = ProductSerializer2(Product.objects.get(id=i)).data
 
             d += (str(serializer))
 

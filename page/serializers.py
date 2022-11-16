@@ -89,6 +89,50 @@ class ImagesSerializer2(serializers.ModelSerializer):
             return obj.product.id
         return None
 
+class ProductSerializer2(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField()
+    review_avg = serializers.SerializerMethodField()
+    type = serializers.SerializerMethodField()
+    marker = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'star', 'images', 'city', 'city_id', 'type', 'review_avg', 'text', 'lon', 'lat', 'open',
+                  'closed',
+                  'marker'
+                  ]
+
+    def get_images(self, obj):
+        print(obj,'sassssssssssssssssssssssssss')
+        images = Images.objects.filter(product=obj).first()
+        if images:
+            return ImagesSerializer(images, many=False ).data
+        return None
+
+    def get_review_avg(self, obj):
+        return Reviews.objects.filter(propducts=obj).aggregate(avg_rating=Avg('star'))["avg_rating"]
+
+    def get_type(self, obj):
+        if obj.type:
+            return obj.type.id
+        return None
+
+    def get_city(self, obj):
+        request = self.context.get("request")
+        data = request.GET if hasattr(request, 'GET') else {}
+        lang = data['lang'] if 'lang' in data else 'uz'
+
+        if lang == "ru":
+            return obj.city.name_ru
+        elif lang == "en":
+            return obj.city.name_en
+        return obj.name
+
+    def get_marker(self, obj):
+        if obj.type:
+            return obj.type.marker.url
+        return None
 
 class ProductSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
@@ -108,7 +152,7 @@ class ProductSerializer(serializers.ModelSerializer):
         print(obj,'sassssssssssssssssssssssssss')
         images = Images.objects.filter(product=obj).first()
         if images:
-            return ImagesSerializer(images, many=False).data
+            return ImagesSerializer(images, many=False , context={'request': self.context['request']}).data
         return None
 
     def get_review_avg(self, obj):
@@ -137,10 +181,6 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 
-class ProductImageSerializer2(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = "__all__"
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
