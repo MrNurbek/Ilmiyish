@@ -105,9 +105,10 @@ class ProductSerializer(serializers.ModelSerializer):
                   ]
 
     def get_images(self, obj):
+        print(obj,'sassssssssssssssssssssssssss')
         images = Images.objects.filter(product=obj).first()
         if images:
-            return ImagesSerializer(images, many=False, context={'request': self.context['request']}).data
+            return ImagesSerializer(images, many=False).data
         return None
 
     def get_review_avg(self, obj):
@@ -133,6 +134,13 @@ class ProductSerializer(serializers.ModelSerializer):
         if obj.type:
             return obj.type.marker.url
         return None
+
+
+
+class ProductImageSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = "__all__"
 
 
 class ProductImageSerializer(serializers.ModelSerializer):

@@ -1,3 +1,5 @@
+from django.contrib.admin import actions
+
 from page.models import *
 from page.serializers import CitySerializer
 from rest_framework import routers, serializers, viewsets, permissions
@@ -9,7 +11,7 @@ from page.filters import *
 from rest_framework import routers, serializers, viewsets, permissions
 from home.pagination import LargeResultsSetPagination, CustomResultsSetPagination
 from rest_framework import generics, mixins, views
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework import status, generics, filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -47,6 +49,19 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
             return ProductSerializer
         else:
             return ProductDetailSerializer
+
+    @action(methods=['get'], detail=False)
+    def listid(self, request):
+        list = request.GET.get('listid')
+        asa = list.split(',')
+        d = ""
+
+        for i in asa:
+            serializer = ProductSerializer(Product.objects.get(id=i)).data
+
+            d += (str(serializer))
+
+        return Response((d))
 
 
 class TypeViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,

@@ -1,5 +1,9 @@
 import django_filters
+from django_filters import Filter
+
 from page.models import *
+
+
 
 
 class ProductFilter(django_filters.FilterSet):
@@ -10,6 +14,10 @@ class ProductFilter(django_filters.FilterSet):
     class Meta:
         model = Product
         fields = ['name', 'city', 'type', 'id']
+
+
+
+
 
 
 class ImageFilter(django_filters.FilterSet):

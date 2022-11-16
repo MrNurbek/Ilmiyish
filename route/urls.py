@@ -1,5 +1,4 @@
 from page.views import *
-
 from rest_framework import routers, serializers, viewsets
 from django.contrib import admin
 from django.urls import path, include
@@ -15,6 +14,7 @@ router.register(r'productimags', ProductImageViewSet)
 
 urlpatterns = [
     path('add_reviews', add_reviews),
+
 
 ]
 
