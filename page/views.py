@@ -1,4 +1,5 @@
 from django.contrib.admin import actions
+import json
 
 from page.models import *
 from page.serializers import CitySerializer
@@ -54,14 +55,17 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
     def listid(self, request):
         list = request.GET.get('listid')
         asa = list.split(',')
-        d = ""
+        d = []
 
         for i in asa:
             serializer = ProductSerializer2(Product.objects.get(id=i)).data
 
-            d += (str(serializer))
+            d.append(dict(serializer))
 
-        return Response((d))
+        # y = json.loads(d)
+        # print(type(y))
+        # print(y)
+        return Response(d)
 
 
 class TypeViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,

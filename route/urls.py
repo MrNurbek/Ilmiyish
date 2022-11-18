@@ -15,7 +15,6 @@ router.register(r'productimags', ProductImageViewSet)
 urlpatterns = [
     path('add_reviews', add_reviews),
 
-
 ]
 
 urlpatterns += router.urls
