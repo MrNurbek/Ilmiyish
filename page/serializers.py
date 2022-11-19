@@ -90,6 +90,42 @@ class ImagesSerializer2(serializers.ModelSerializer):
         return None
 
 
+class ProductDetailSerializer(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField()
+    review = serializers.SerializerMethodField()
+    review_avg = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'star', 'images', 'city', 'type', 'review', 'text', "review_avg", 'lon', 'lat', 'open',
+                  'closed']
+
+    def get_images(self, obj):
+        images = Images.objects.filter(product=obj).all()
+        return ImagesSerializer(images, many=True, context={'request': self.context['request']}).data
+
+    def get_review(self, obj):
+        review = Reviews.objects.filter(products=obj).first()
+        if review:
+            return ReviewsSerializer(review, many=False, context={'request': self.context['request']}).data
+        return None
+
+    def get_review_avg(self, obj):
+        return Reviews.objects.filter(products=obj).aggregate(avg_rating=Avg('star'))['avg_rating']
+
+    def get_city(self, obj):
+        request = self.context.get("request")
+        data = request.GET if hasattr(request, 'GET') else {}
+        lang = data['lang'] if 'lang' in data else 'uz'
+
+        if lang == "ru":
+            return obj.city.name_ru
+        elif lang == "en":
+            return obj.city.name_en
+        return obj.city.name
+
+
 class ProductSerializer2(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     review_avg = serializers.SerializerMethodField()
@@ -119,16 +155,19 @@ class ProductSerializer2(serializers.ModelSerializer):
             return obj.type.id
         return None
 
+    # def get_city(self, obj):
+    #     return obj.city.name_ru
+
+
     def get_city(self, obj):
         request = self.context.get("request")
         data = request.GET if hasattr(request, 'GET') else {}
         lang = data['lang'] if 'lang' in data else 'uz'
-
         if lang == "ru":
             return obj.city.name_ru
         elif lang == "en":
             return obj.city.name_en
-        return obj.name
+        return obj.city.name
 
     def get_marker(self, obj):
         if obj.type:
@@ -173,7 +212,7 @@ class ProductSerializer(serializers.ModelSerializer):
             return obj.city.name_ru
         elif lang == "en":
             return obj.city.name_en
-        return obj.name
+        return obj.city.name
 
     def get_marker(self, obj):
         if obj.type:
@@ -191,30 +230,6 @@ class ProductImageSerializer(serializers.ModelSerializer):
     def get_images(self, obj):
         images = Images.objects.filter(product=obj).all()
         return ImagesSerializer(images, many=True, context={'request': self.context['request']}).data
-
-
-class ProductDetailSerializer(serializers.ModelSerializer):
-    images = serializers.SerializerMethodField()
-    review = serializers.SerializerMethodField()
-    review_avg = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Product
-        fields = ['id', 'name', 'star', 'images', 'city', 'type', 'review', 'text', "review_avg", 'lon', 'lat', 'open',
-                  'closed']
-
-    def get_images(self, obj):
-        images = Images.objects.filter(product=obj).all()
-        return ImagesSerializer(images, many=True, context={'request': self.context['request']}).data
-
-    def get_review(self, obj):
-        review = Reviews.objects.filter(products=obj).first()
-        if review:
-            return ReviewsSerializer(review, many=False, context={'request': self.context['request']}).data
-        return None
-
-    def get_review_avg(self, obj):
-        return Reviews.objects.filter(products=obj).aggregate(avg_rating=Avg('star'))['avg_rating']
 
 
 class ImagesReviewsSerializer(serializers.ModelSerializer):

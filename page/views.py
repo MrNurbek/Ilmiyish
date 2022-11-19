@@ -62,9 +62,6 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
 
             d.append(dict(serializer))
 
-        # y = json.loads(d)
-        # print(type(y))
-        # print(y)
         return Response(d)
 
 
