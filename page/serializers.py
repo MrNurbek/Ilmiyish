@@ -95,6 +95,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     review = serializers.SerializerMethodField()
     review_avg = serializers.SerializerMethodField()
     city = serializers.SerializerMethodField()
+    type = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -113,6 +114,18 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     def get_review_avg(self, obj):
         return Reviews.objects.filter(products=obj).aggregate(avg_rating=Avg('star'))['avg_rating']
+
+
+    def get_type(self, obj):
+        request = self.context.get("request")
+        data = request.GET if hasattr(request, 'GET') else {}
+        lang = data['lang'] if 'lang' in data else 'uz'
+
+        if lang == "ru":
+            return obj.type.name_ru
+        elif lang == "en":
+            return obj.type.name_en
+        return obj.type.name
 
     def get_city(self, obj):
         request = self.context.get("request")
