@@ -53,16 +53,21 @@ class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
 
     @action(methods=['get'], detail=False)
     def listid(self, request):
+
         list = request.GET.get('listid')
-        asa = list.split(',')
-        d = []
+        if not list:
+            return Response([])
+        else:
+            asa = list.split(',')
+            d = []
 
-        for i in asa:
-            serializer = ProductSerializer2(Product.objects.get(id=i)).data
 
-            d.append(dict(serializer))
+            for i in asa:
+                serializer = ProductSerializer2(Product.objects.get(id=i)).data
 
-        return Response(d)
+                d.append(dict(serializer))
+
+            return Response(d)
 
 
 class TypeViewSet(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
